@@ -51,10 +51,12 @@ public class QuestionResponse extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        
         try (PrintWriter out = response.getWriter()) {
             String question = request.getParameter(Extras.QUESTION_PARAMETER_KEY);
             Answer answer = getRandomAnswer();
-
+            
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
