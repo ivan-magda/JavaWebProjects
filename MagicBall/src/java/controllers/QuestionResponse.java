@@ -55,7 +55,6 @@ public class QuestionResponse extends HttpServlet {
         
         try (PrintWriter out = response.getWriter()) {
             String question = request.getParameter(Extras.QUESTION_PARAMETER_KEY);
-            Answer answer = getRandomAnswer();
             
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -63,8 +62,17 @@ public class QuestionResponse extends HttpServlet {
             out.println("<title>Question Answer</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Вы задали вопрос: " + question + "</h1>");
-            out.println("<h1>Мой ответ: " + answer.getTitle() + ".</h1>");
+            
+            // Check if question is valid.
+            if (question != null && !question.replaceAll("\\s", "").isEmpty()) {
+                Answer answer = getRandomAnswer();
+                
+                out.println("<h1>Вы задали вопрос: " + question + "</h1>");
+                out.println("<h1>Мой ответ: " + answer.getTitle() + ".</h1>");
+            } else {
+                out.println("<h1>Вы задали некорректный вопрос.</h1>");
+            }
+            
             out.println("<button type=\"button\" name=\"back\" onclick=\"history.back()\">Назад</button>");
             out.println("</body>");
             out.println("</html>");
