@@ -8,7 +8,6 @@ package controllers;
 import extras.Extras;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -124,7 +123,7 @@ public class QuestionResponse extends HttpServlet {
         int count = (int) countQuery.getSingleResult();
 
         Random random = new Random();
-        int idx = random.nextInt((int) count);
+        int idx = random.nextInt(count);
 
         Query selectQuery = entityManager.createQuery("SELECT a FROM Answer a");
         selectQuery.setFirstResult(idx);
