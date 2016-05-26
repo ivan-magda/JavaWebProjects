@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -119,16 +120,17 @@ public class QuestionResponse extends HttpServlet {
     }
 
     private Answer getRandomAnswer() {
-        List<Answer> answers = getAllAnswers();
-        
+        Query countQuery = entityManager.createNativeQuery("SELECT count(*) FROM Answer");
+        int count = (int) countQuery.getSingleResult();
+
         Random random = new Random();
-        int index = random.nextInt(answers.size());
+        int idx = random.nextInt((int) count);
+
+        Query selectQuery = entityManager.createQuery("SELECT a FROM Answer a");
+        selectQuery.setFirstResult(idx);
+        selectQuery.setMaxResults(1);
         
-        return answers.get(index);
-    }
-    
-    private List<Answer> getAllAnswers() {
-        return entityManager.createQuery("SELECT x FROM Answer x").getResultList();
+        return (Answer) selectQuery.getSingleResult();
     }
 
     private void persistAnswers() {
