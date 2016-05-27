@@ -71,7 +71,7 @@ public class QuoteServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            persistDataIfNeeded();
+            //persistData();
             Quote quote = getRandomQuote();
 
             out.println("<!DOCTYPE html>");
@@ -108,35 +108,31 @@ public class QuoteServlet extends HttpServlet {
         return (Quote) selectQuery.getSingleResult();
     }
 
-    private void persistDataIfNeeded() {
+    private void persistData() {
         try {
             userTransaction.begin();
 
-            Query countQuery = entityManager.createNativeQuery("SELECT count(*) FROM Quote");
-            int count = (int) countQuery.getSingleResult();
-            if (count == 0) {
-                Author abrahamLincoln = new Author();
-                abrahamLincoln.setName("Авраам Линкольн");
-                abrahamLincoln.setQuotes(new ArrayList<>());
-                entityManager.persist(abrahamLincoln);
+            Author abrahamLincoln = new Author();
+            abrahamLincoln.setName("Авраам Линкольн");
+            abrahamLincoln.setQuotes(new ArrayList<>());
+            entityManager.persist(abrahamLincoln);
 
-                String[] lincolnQuotes = {
-                    "Когда я делаю добро, я чувствую себя хорошо. Когда я поступаю плохо, я чувствую себя плохо. Вот моя религия.",
-                    "Мы не поможем людям, делая за них то, что они могли бы сделать сами."
-                };
-                persistQuotesFromArray(lincolnQuotes, abrahamLincoln);
+            String[] lincolnQuotes = {
+                "Когда я делаю добро, я чувствую себя хорошо. Когда я поступаю плохо, я чувствую себя плохо. Вот моя религия.",
+                "Мы не поможем людям, делая за них то, что они могли бы сделать сами."
+            };
+            persistQuotesFromArray(lincolnQuotes, abrahamLincoln);
 
-                Author albertEinstein = new Author();
-                albertEinstein.setName("Альберт Эйнштейн");
-                albertEinstein.setQuotes(new ArrayList<>());
-                entityManager.persist(albertEinstein);
+            Author albertEinstein = new Author();
+            albertEinstein.setName("Альберт Эйнштейн");
+            albertEinstein.setQuotes(new ArrayList<>());
+            entityManager.persist(albertEinstein);
 
-                String[] einsteinQuotes = {
-                    "Стремись не к тому, чтобы добиться успеха, а к тому, чтобы твоя жизнь имела смысл.",
-                    "Достойна только та жизнь, которая прожита ради других людей."
-                };
-                persistQuotesFromArray(einsteinQuotes, albertEinstein);
-            }
+            String[] einsteinQuotes = {
+                "Стремись не к тому, чтобы добиться успеха, а к тому, чтобы твоя жизнь имела смысл.",
+                "Достойна только та жизнь, которая прожита ради других людей."
+            };
+            persistQuotesFromArray(einsteinQuotes, albertEinstein);
 
             userTransaction.commit();
         } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
