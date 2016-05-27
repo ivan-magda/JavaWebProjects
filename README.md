@@ -12,6 +12,9 @@ Example of one to one relationship in database.
 ### DatabaseOneToMany
 Example of one to many relationship in database. 
 
+### SessionBean
+Java EE Session Bean example project.
+
 ### MagicBall
 Magic 8 ball is a mystic 8 ball, ball fate ball of questions and answers, 
 predictions of the ball - a toy, a comic way to predict the future.
